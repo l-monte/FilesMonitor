@@ -4,4 +4,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
-        main.cpp
+    src/main.cpp \
+    src/FilesMonitorApp/FilesMonitorApp.cpp
+
+HEADERS += \
+    src/FilesMonitorApp/FilesMonitorApp.h
