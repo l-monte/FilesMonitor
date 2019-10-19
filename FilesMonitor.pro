@@ -15,18 +15,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/FileScanner.cpp \
     src/ArchiveWriter/ArchiveWriter.cpp \
     src/DataSender/DataSender.cpp \
     src/FilesReader/FileReader.cpp \
+    src/MonitorConfig.cpp \
     src/main.cpp \
+    src/Worker.cpp \
     src/FilesMonitorApp/FilesMonitorApp.cpp
 
 HEADERS += \
+    src/FileScanner.h \
     src/ArchiveWriter/ArchiveWriter.h \
     src/DataSender/DataSender.h \
     src/FilesMonitorApp/FilesMonitorApp.h \
     src/FilesReader/FileReader.h \
-    src/MonitorConfig.h
+    src/MonitorConfig.h \
+    src/MonitorDefs.h \
+    src/Worker.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

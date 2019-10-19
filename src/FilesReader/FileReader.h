@@ -13,14 +13,10 @@ public:
     FileReader(const QString& rootDir);
     virtual ~FileReader() ;
 
-public slots:
-    void scanFiles();
-
 private:
     QFile _rootFile;
 
-    QTimer* _scanningFileTimer;
-    QHash<QString, bool> _filesMap;
+    
 };
 
 #endif // FILEREADER_H
