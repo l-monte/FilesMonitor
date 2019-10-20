@@ -3,15 +3,13 @@
 #include <QDebug>       // TODO
 #include <QDir>
 
-int Worker::_id = 0;
-
-Worker::Worker(const QString& filePath) :
-    _filePath(filePath),
+Worker::Worker(unsigned int id) :
+    _id(id),
+    _filePath(""),
     _reader(""),        // TODO
     _writer(""),        // TODO
     _sender()           // TODO
 {
-    _id++;
     qDebug() << "Worker() with id: " << _id << " received file path: " << _filePath;
 }
 
@@ -25,5 +23,11 @@ void Worker::process()
     qDebug() << "Worker[" << _id << "]::process()";
 
 
-    //emit finished();
+
+    emit resultReady("koncze prace");
+}
+
+void Worker::setPath(const QString& path)
+{
+    _filePath = path;
 }

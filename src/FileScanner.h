@@ -18,6 +18,7 @@ signals:
     void scannerTimeout();      // TODO do usunięcia
     void newFileAdded(const QString& fileName);
     void fileModified(const QString& fileName);
+    void fileRemoved(const QString& fileName);
 
 private slots:
     void onFileChanged(const QString& fileName);

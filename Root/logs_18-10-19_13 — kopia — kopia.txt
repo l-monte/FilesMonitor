@@ -5,4 +5,5 @@ logs: 18.10.19#13 linia4
 logs: 18.10.19#13 linia5
 logs: 18.10.19#13 linia6
 logs: 18.10.19#13 linia7
-logs: 18.10.19#13 linia8
+
+

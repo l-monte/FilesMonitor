@@ -28,9 +28,6 @@ void FileScanner::scanFiles()
     qDebug() << "INFO: [FileScanner] start of function";
     QStringList fileList = _rootDirectory.entryList(QDir::Files);
 
-    if (fileList.size() == 0)               // TODO
-        qDebug() << "\nERROR: [FileScanner] Nie znaleziono zadnych plikow.";
-
     for (int i = 0; i < fileList.size(); ++i)
     {
         if (isNewFile(fileList[i]))
@@ -38,30 +35,16 @@ void FileScanner::scanFiles()
             qDebug() << "INFO: [FileScanner] Added new file: " << fileList[i];
 
             _watcher.addPath(_rootDirectory.path() + "/" + fileList[i]);
+
+            qDebug() << "INFO: [FileScanner] powinno sie wyslac newFileAdded !??!?!?!?!?";
             emit newFileAdded(fileList[i]);
         }
     }
-
-    /*for (int i = 0; i < fileList.size(); ++i)
-    {
-        //QString fileName = files.takeFirst();
-        qDebug() << "INFO: scanFiles() file:" << fileList[i] <<" full path: " << (_rootDirectory.path() + "/" + fileList[i]);
-
-        auto findResult = _allfilesMap.find(fileList[i]);
-        if (findResult == _allfilesMap.end())
-        {
-            _allfilesMap.insert(fileList[i], true);
-        }
-        else
-        {
-            // TODO(usunąć później) do nothing
-        }
-    }*/
 }
 
 void FileScanner::onFileChanged(const QString& fileName)
 {
-    if (QFileInfo::exists(_rootDirectory.path() + "/" + fileName))
+    if (QFileInfo::exists(fileName))
     {
         qDebug() << "INFO: [FileScanner] emitting fileModified() signal.";
         emit fileModified(fileName);
@@ -69,7 +52,9 @@ void FileScanner::onFileChanged(const QString& fileName)
     else
     {
         qDebug() << "INFO: [FileScanner] Remove file: " << fileName;
+        qDebug() << "INFO: [FileScanner] emitting fileRemoved() signal.";
         _watcher.removePath(fileName);
+        emit fileRemoved(fileName);
     }
 }
 

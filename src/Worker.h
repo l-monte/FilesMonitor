@@ -14,18 +14,20 @@ class Worker : public QObject
 {
     Q_OBJECT
 public:
-    Worker(const QString& filePath);
+    Worker(unsigned int id);
     ~Worker();
+
+    void setPath(const QString& path);
 
 public slots:
     void process();
 
 signals:
-    void finished();
+    void resultReady(const QString msg);
 
 private:
-    static int _id;
-    const QString _filePath;
+    const unsigned int _id;
+    QString _filePath;
 
     FileReader _reader;
     ArchiveWriter _writer;
