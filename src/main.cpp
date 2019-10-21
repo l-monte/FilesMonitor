@@ -3,12 +3,8 @@
 #include "MonitorConfig.h"
 #include <QDebug>                               // TODO
 #include <QDir>
-#include "FileScanner.h"        // TODO przenieść do App
 #include <QThreadPool>
 #include <QFileInfo>
-
-//====================================
-#include "dupa.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,13 +27,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    qDebug() << "WorkerThread() testowanie ------------------------------";
-
-//    Runner* r = new Runner();
-//    r->operate();
-//    delete r;
-
-    qDebug() << "WorkerThread() testowanie ------------------------------";
     FilesMonitorApp app(argv[1], argv[2], &a);
 
     return a.exec();

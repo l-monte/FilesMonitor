@@ -1,9 +1,0 @@
-logs: 18.10.19#13 linia1
-logs: 18.10.19#13 linia2
-logs: 18.10.19#13 linia3
-logs: 18.10.19#13 linia4
-logs: 18.10.19#13 linia5
-logs: 18.10.19#13 linia6
-logs: 18.10.19#13 linia7
-
-

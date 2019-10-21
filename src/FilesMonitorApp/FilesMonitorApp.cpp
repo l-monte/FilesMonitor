@@ -10,28 +10,15 @@ FilesMonitorApp::FilesMonitorApp(const QString& rootDirectory, const QString& ar
     QObject(parent),
     _rootDir(rootDirectory),
     _archDir(archiveDirectory),
-    _workers(),
-    _threads(),
-    _filesMap(),
+    _threadPool(this),
     _fileScanner(rootDirectory)
 {
+    _threadPool.setMaxThreadCount(THREAD_NUMBER);
+
     connect(&_fileScanner, &FileScanner::fileModified, this, &FilesMonitorApp::onFileModified);
     connect(&_fileScanner, &FileScanner::newFileAdded, this, &FilesMonitorApp::onNewFileAdded);
     connect(&_fileScanner, &FileScanner::fileRemoved, this, &FilesMonitorApp::onFileRemoved);
     _fileScanner.scanFiles();
-
-    for (int i = 0; i < THREAD_NUMBER; ++i)
-    {
-        _workers.push_back(new Worker(i+1));
-        _threads.push_back(new QThread);
-        _workers[i]->moveToThread(_threads[i]);
-
-        connect(_workers[i], &Worker::resultReady, this, &FilesMonitorApp::onResultReady);
-        //connect(this, &Runner::operate, worker, &Worker::process);
-        //connect(worker, &Worker::resultReady, &_wThread, WorkerThread::quit);
-        connect(&_wThread, &WorkerThread::finished, worker, &Worker::deleteLater);
-        _threads[i]->start();
-    }
 }
 
 void FilesMonitorApp::onNewFileAdded(const QString& file)
@@ -41,7 +28,16 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
 
     if (counter == 1)
     {
-        setupOneThread(file);
+        qDebug() << "[FilesMonitorApp::onNewFileAdded] starting thread pool for file: " << file;
+        Worker *worker = new Worker( WorkerData{_rootDir.absoluteFilePath() + "/" + file, _rootDir.absoluteFilePath(), "192.168.54.2"} );       // TODO
+        worker->setAutoDelete(true);
+
+        worker->_respHandler = [this](std::pair<QString, bool> msg){ this->respHandler(msg); };
+
+        if (_threadPool.tryStart(worker))
+            qDebug() << "[FilesMonitorApp::onNewFileAdded] thread pool started.";
+        else
+            qDebug() << "ERROR: [FilesMonitorApp::onNewFileAdded] New worker not started!";
     }
 
     counter++;
@@ -56,20 +52,12 @@ void FilesMonitorApp::onFileRemoved(const QString& file)
     qDebug() << "INFO: [FilesMonitorApp] got fileRemoved signal (file: " << file << ").";
 }
 
-void FilesMonitorApp::onResultReady(const QString& msg)
+void FilesMonitorApp::respHandler(std::pair<QString, bool> respMsg)
 {
-    qDebug() << "INFO: [FilesMonitorApp] got onResultReady signal (message: " << msg << ").";
+    qDebug() << "[FilesMonitorApp::respHandler] received " << respMsg.second << " as finished status for file: " << respMsg.first;
 }
 
 FilesMonitorApp::~FilesMonitorApp()
 {
-    for (int i = 0; i < THREAD_NUMBER; ++i)
-    {
-//        _workers[i]->moveToThread(QApplication::instance()->thread());
-//        delete _workers[i];
-        _threads[i]->quit();
-        _threads[i]->wait();
-        //delete _threads[i];
-        delete _threads[i];
-    }
+
 }

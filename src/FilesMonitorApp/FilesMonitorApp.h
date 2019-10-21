@@ -2,7 +2,7 @@
 #define FILESMONITORAPP_H
 #include <QFileInfo>
 #include <QObject>
-#include <QThread>
+#include <QThreadPool>
 #include <QVector>
 #include "../MonitorDefs.h"
 #include "../FileScanner.h"
@@ -20,18 +20,16 @@ private slots:
     void onNewFileAdded(const QString& file);
     void onFileModified(const QString& file);
     void onFileRemoved(const QString& file);
-    void onResultReady(const QString& file);
 
-signals:
+private:
+    void respHandler(std::pair<QString, bool> respMsg);
 
 private:
     QFileInfo _rootDir;
     QFileInfo _archDir;
 
-    QVector<Worker*> _workers;
-    QVector<QThread*> _threads;
+    QThreadPool _threadPool;
 
-    FileNameToWasChangedMap _filesMap;
     FileScanner _fileScanner;
 };
 

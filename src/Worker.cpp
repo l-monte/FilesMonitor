@@ -3,31 +3,20 @@
 #include <QDebug>       // TODO
 #include <QDir>
 
-Worker::Worker(unsigned int id) :
-    _id(id),
-    _filePath(""),
-    _reader(""),        // TODO
-    _writer(""),        // TODO
-    _sender()           // TODO
+Worker::Worker(const WorkerData& data) :
+    _filePath(data.filePath),
+    _archivePath(data.archivePath),
+    _endpointAddr(data.endpointAddr),
+    _reader(data.filePath),
+    _writer(data.archivePath)
+    //_sender(data.endpointAddr)
 {
-    qDebug() << "Worker() with id: " << _id << " received file path: " << _filePath;
+    qDebug() << "[Worker::Worker] c-tor";
 }
 
-Worker::~Worker()
+void Worker::run()
 {
-    qDebug() << "Deleting Worker with id: " << _id << ".";
+    qDebug() << "[Worker::run] Running worker for file: " << _filePath;
+    _reader.readFile();
 }
 
-void Worker::process()
-{
-    qDebug() << "Worker[" << _id << "]::process()";
-
-
-
-    emit resultReady("koncze prace");
-}
-
-void Worker::setPath(const QString& path)
-{
-    _filePath = path;
-}

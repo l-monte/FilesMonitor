@@ -1,37 +1,40 @@
 #ifndef WORKER_H
 #define WORKER_H
 
-#include <QObject>
 #include "FilesReader/FileReader.h"
 #include "ArchiveWriter/ArchiveWriter.h"
 #include "DataSender/DataSender.h"
+#include "MonitorDefs.h"
+#include <QRunnable>
+#include <functional>
 
 class QString;
 
-// TODO wydzielić do interfejsu Worker'a
-
-class Worker : public QObject
+class Worker : public QRunnable
 {
-    Q_OBJECT
 public:
-    Worker(unsigned int id);
-    ~Worker();
+    Worker(const WorkerData& data);
 
-    void setPath(const QString& path);
+    Worker(const Worker& o) = delete;
+    Worker(Worker&& o) = delete;
+    Worker& operator=(Worker&& o) = delete;
+    Worker& operator=(const Worker& o) = delete;
+    ~Worker() = default;
 
-public slots:
-    void process();
-
-signals:
-    void resultReady(const QString msg);
+protected:
+    virtual void run();
 
 private:
-    const unsigned int _id;
     QString _filePath;
+    QString _archivePath;
+    QString _endpointAddr;
 
     FileReader _reader;
     ArchiveWriter _writer;
     DataSender _sender;
+
+public:
+    std::function<void(std::pair<QString, bool>)> _respHandler;
 };
 
 #endif // WORKER_H

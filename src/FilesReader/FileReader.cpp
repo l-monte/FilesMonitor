@@ -4,28 +4,43 @@
 #include <QFileInfo>
 #include <QDebug>
 
-FileReader::FileReader(const QString& rootDir) :
-    _rootFile(rootDir)
+FileReader::FileReader(const QString& filePath) :
+    _file(filePath)
 {
+}
+
+void FileReader::readFile()
+{
+    qDebug() << "[FileReader::readFile] Reading " << _file.fileName() << " file...";
+
+    if (_file.open(QFile::ReadOnly)) {
+        char buf[4 * 400];      // 1 MB
+
+        QTextStream in(&_file);
+        while (!in.atEnd())
+        {
+           QString line = in.readLine();
+           ...
+        }
+        inputFile.close();
+
+        qDebug() << "[FileReader::readFile] Pos of current file: " << _file.pos() << ".";
+    }
+
 
 }
 
-//void FileReader::scanFiles()
-//{
-//    qDebug() << "LOG: FileReader.cpp : scanFiles() - start function";
-//    QDir directory(QFileInfo(_rootFile.fileName()).absoluteFilePath());
-//    QStringList files = directory.entryList(QDir::Files);
+      /*
+       * QFile inputFile(fileName);
+      if (inputFile.open(QIODevice::ReadOnly))
+      {
+         QTextStream in(&inputFile);
+         while (!in.atEnd())
+         {
+            QString line = in.readLine();
+            ...
+         }
+         inputFile.close();
+      }
 
-//    if (files.size() > 0)               // TODO
-//        qDebug() << "\nLista plikow:";
-
-//    foreach(QString fileName, files) {
-//        _filesMap.insert(fileName, true);
-//        qDebug() << "Plik: " << fileName;
-//    }
-//}
-
-FileReader::~FileReader()
-{
-    //delete _scanningFileTimer;
-}
+      */

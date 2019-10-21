@@ -33,8 +33,6 @@ void FileScanner::scanFiles()
             qDebug() << "INFO: [FileScanner] Added new file: " << fileList[i];
 
             _watcher.addPath(_rootDirectory.path() + "/" + fileList[i]);
-
-            qDebug() << "INFO: [FileScanner] powinno sie wyslac newFileAdded !??!?!?!?!?";
             emit newFileAdded(fileList[i]);
         }
     }
