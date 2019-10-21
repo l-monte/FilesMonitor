@@ -3,6 +3,7 @@
 #include <QFileInfo>
 #include <QObject>
 #include <QThread>
+#include <QVector>
 #include "../MonitorDefs.h"
 #include "../FileScanner.h"
 
@@ -21,15 +22,14 @@ private slots:
     void onFileRemoved(const QString& file);
     void onResultReady(const QString& file);
 
-private:
-    void setupOneThread(const QString& file);
+signals:
 
 private:
     QFileInfo _rootDir;
     QFileInfo _archDir;
 
-    Worker* _worker;
-    QThread _thread;
+    QVector<Worker*> _workers;
+    QVector<QThread*> _threads;
 
     FileNameToWasChangedMap _filesMap;
     FileScanner _fileScanner;

@@ -10,17 +10,15 @@ FileScanner::FileScanner(const QString& dirPath, QObject *parent) : QObject(pare
 {
     //_rootDirectory.setNameFilters(QStringList() << QString(SUPPORTED_FILE_FORMAT));
 
-    _fileScanningTimer->setSingleShot(false);
-    _fileScanningTimer->setInterval(SCANNING_TIMER_INTERVAL);
-    _fileScanningTimer->start();
+//    _fileScanningTimer->setSingleShot(false);
+//    _fileScanningTimer->setInterval(SCANNING_TIMER_INTERVAL);
+//    _fileScanningTimer->start();
 
-    connect(_fileScanningTimer, &QTimer::timeout, this, [this]{ /*TODO*/qDebug() << "sending scanner timeout..."; emit scannerTimeout(); });
+//    connect(_fileScanningTimer, &QTimer::timeout, this, [this]{ /*TODO*/qDebug() << "sending scanner timeout..."; emit scannerTimeout(); });
 
-    connect(&_watcher, &QFileSystemWatcher::directoryChanged, this, [this]{ qDebug() << "FileScanner: received directoryChanged() signal."; scanFiles(); });
-    connect(&_watcher, &QFileSystemWatcher::fileChanged, this, [&](const QString& name){ qDebug() << "fileChanged() : " << name; onFileChanged(name); });
+//    connect(&_watcher, &QFileSystemWatcher::directoryChanged, this, [this]{ qDebug() << "FileScanner: received directoryChanged() signal."; scanFiles(); });
+//    connect(&_watcher, &QFileSystemWatcher::fileChanged, this, [&](const QString& name){ qDebug() << "fileChanged() : " << name; onFileChanged(name); });
     _watcher.addPath(dirPath);
-
-    scanFiles();
 }
 
 void FileScanner::scanFiles()

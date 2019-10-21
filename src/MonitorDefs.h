@@ -1,9 +1,12 @@
 #ifndef MONITORDEFS_H
 #define MONITORDEFS_H
+#include <QString>
 
-#include <QHash>
-
-using FileNameToWasChangedMap = QHash<QString, bool>;
-using AllFilesMap = QHash<QString, bool>;
+struct WorkerData
+{
+    QString filePath;
+    QString archivePath;
+    QString endpointAddr;
+};
 
 #endif // MONITORDEFS_H
