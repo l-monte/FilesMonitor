@@ -7,7 +7,7 @@ class DataSender
 public:
     DataSender();
 
-    void send();
+    void send(const QString& data);
 
 private:
     QString _ipAddr;        // TODO: refactor me to IPAddr type

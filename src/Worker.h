@@ -6,12 +6,14 @@
 #include "DataSender/DataSender.h"
 #include "MonitorDefs.h"
 #include <QRunnable>
+#include <QObject>
 #include <functional>
 
 class QString;
 
-class Worker : public QRunnable
+class Worker : public QObject, public QRunnable
 {
+    Q_OBJECT
 public:
     Worker(const WorkerData& data);
 
@@ -23,6 +25,8 @@ public:
 
 protected:
     virtual void run();
+
+    void sendLogPortionHandler(const QString& logs);
 
 private:
     QString _filePath;

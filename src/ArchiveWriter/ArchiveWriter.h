@@ -3,11 +3,13 @@
 #include <QString>
 #include <QFile>
 
-class ArchiveWriter
+class ArchiveWriter : public QObject
 {
+    Q_OBJECT
 public:
     ArchiveWriter(const QString& archDir);
 
+    void write(const QString& logChunk);
 private:
     QFile _archDir;
 };

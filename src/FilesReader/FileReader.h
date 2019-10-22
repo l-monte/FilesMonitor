@@ -3,6 +3,7 @@
 #include <QString>
 #include <QFile>
 #include <QHash>
+#include <functional>
 
 class QTimer;
 
@@ -19,6 +20,9 @@ public:
     virtual ~FileReader() = default;
 
     void readFile();
+
+public:
+    std::function<void(const QString&)> _sendLogPortionHandler;
 
 private:
     QFile _file;

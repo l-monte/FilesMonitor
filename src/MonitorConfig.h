@@ -7,4 +7,6 @@ constexpr unsigned int SCANNING_TIMER_INTERVAL = 5000;
 
 constexpr unsigned int THREAD_NUMBER = 8;
 
+constexpr unsigned int LOG_LINE_LENGTH = 400;
+
 #endif // MONITORCONFIG_H

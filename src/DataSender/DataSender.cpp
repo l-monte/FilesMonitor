@@ -5,8 +5,8 @@ DataSender::DataSender() : _ipAddr(""), _port(4200)
 
 }
 
-void DataSender::send()
+void DataSender::send(const QString& data)
 {
-    qDebug() << "REST Data Sender: sending data...";
+    qDebug() << "\tINFO: [DataSender::send] sending data to endpoint: " << data;
 }
 
