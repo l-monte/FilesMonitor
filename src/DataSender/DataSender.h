@@ -4,9 +4,8 @@
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
-class DataSender : public QObject
+class DataSender
 {
-    Q_OBJECT
 public:
     DataSender();
 

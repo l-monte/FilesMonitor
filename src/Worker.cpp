@@ -2,6 +2,7 @@
 #include <QString>
 #include <QDebug>       // TODO
 #include <QDir>
+#include "Task.h"
 
 Worker::Worker(const WorkerData& data) :
     _filePath(data.filePath),
@@ -11,7 +12,7 @@ Worker::Worker(const WorkerData& data) :
     _writer(data.archivePath),
     _sender()
 {
-    qDebug() << "[Worker::Worker] c-tor, current threadId = " + QThread::;
+    qDebug() << "[Worker::Worker] c-tor";
 
     _reader._sendLogPortionHandler = [this](const QList<QString>& fileContent){ this->sendLogPortionHandler(fileContent); };
 }
@@ -20,6 +21,9 @@ void Worker::run()
 {
     qDebug() << "[Worker::run] Running worker for file: " << _filePath;
     _reader.readFile();
+
+//    Task task1({});
+//    task1.run();
 }
 
 void Worker::sendLogPortionHandler(const QList<QString>& logs)
