@@ -26,7 +26,7 @@ public:
 protected:
     virtual void run();
 
-    void sendLogPortionHandler(const QString& logs);
+    void sendLogPortionHandler(const QList<QString>& logs);
 
 private:
     QString _filePath;

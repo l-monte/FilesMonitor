@@ -13,7 +13,7 @@ Worker::Worker(const WorkerData& data) :
 {
     qDebug() << "[Worker::Worker] c-tor";
 
-    _reader._sendLogPortionHandler = [this](const QString& data){ this->sendLogPortionHandler(data); };
+    _reader._sendLogPortionHandler = [this](const QList<QString>& fileContent){ this->sendLogPortionHandler(fileContent); };
 }
 
 void Worker::run()
@@ -22,7 +22,7 @@ void Worker::run()
     _reader.readFile();
 }
 
-void Worker::sendLogPortionHandler(const QString& logs)
+void Worker::sendLogPortionHandler(const QList<QString>& logs)
 {
     _writer.write(logs);
     _sender.send(logs);

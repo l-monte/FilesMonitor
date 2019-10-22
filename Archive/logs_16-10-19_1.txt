@@ -1,0 +1,10 @@
+logs: 16.10.19#1 linia1
+logs: 16.10.19#1 linia2
+logs: 16.10.19#1 linia3
+logs: 16.10.19#1 linia4
+logs: 16.10.19#1 linia5
+logs: 16.10.19#1 linia6
+logs: 16.10.19#1 linia7
+logs: 16.10.19#1 linia8
+logs: 16.10.19#1 linia9
+logs: 16.10.19#1 linia10

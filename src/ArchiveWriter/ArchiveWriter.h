@@ -9,9 +9,9 @@ class ArchiveWriter : public QObject
 public:
     ArchiveWriter(const QString& archDir);
 
-    void write(const QString& logChunk);
+    void write(const QList<QString>& logChunk);
 private:
-    QFile _archDir;
+    QFile _file;
 };
 
 #endif // ARCHIVEWRITER_H

@@ -26,14 +26,13 @@ void FileReader::readFile()
 
         while (not input.atEnd())
         {
-            line = input.readLine(LOG_LINE_LENGTH);
-            lines.push_back(line);
+            lines.push_back(input.readLine(LOG_LINE_LENGTH));
             ++lineCnt;
 
             if (lineCnt % 1310 == 0)
             {
                 qDebug() << "[FileReader::readFile] got logs portion. Calling _sendLogPortionHandler() callback.";
-                _sendLogPortionHandler(line);
+                _sendLogPortionHandler(lines);
             }
         }
         qDebug() << "\nDisplaing read lines:";
@@ -41,12 +40,10 @@ void FileReader::readFile()
 //        {
 //            qDebug() << lineList;
 //        }
-        qDebug() << line;
-        _sendLogPortionHandler(line);
-        _file.close();
-
-        qDebug() << "[FileReader::readFile] Pos of current file: " << _file.pos() << ".";
+        if (lineCnt % 1310 != 0)
+        {
+            _sendLogPortionHandler(lines);
+            _file.close();
+        }
     }
-
-
 }

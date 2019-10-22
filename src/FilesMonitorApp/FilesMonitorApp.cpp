@@ -29,7 +29,7 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
     if (counter == 1)
     {
         qDebug() << "[FilesMonitorApp::onNewFileAdded] starting thread pool for file: " << file;
-        Worker *worker = new Worker( WorkerData{_rootDir.absoluteFilePath() + "/" + file, _rootDir.absoluteFilePath(), "192.168.54.2"} );       // TODO
+        Worker *worker = new Worker( WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file, "192.168.54.2"} );       // TODO
         worker->setAutoDelete(true);
 
         worker->_respHandler = [this](std::pair<QString, bool> msg){ this->respHandler(msg); };

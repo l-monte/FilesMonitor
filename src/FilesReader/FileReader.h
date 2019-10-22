@@ -22,7 +22,7 @@ public:
     void readFile();
 
 public:
-    std::function<void(const QString&)> _sendLogPortionHandler;
+    std::function<void(const QList<QString>&)> _sendLogPortionHandler;
 
 private:
     QFile _file;
