@@ -9,8 +9,6 @@ ArchiveWriter::ArchiveWriter(const QString& archDir) : _file(archDir)
 void ArchiveWriter::write(const QList<QString>& logChunk)
 {
     qDebug() << "\tINFO: [ArchiveWriter::write] received log portion from FileReader";
-    qDebug() << "\tINFO: [ArchiveWriter::write] archive folder full path: " << _file.fileName();
-
 
     if (_file.open(QFile::WriteOnly | QFile::Text))
     {

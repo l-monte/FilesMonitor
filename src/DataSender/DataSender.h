@@ -1,9 +1,12 @@
 #ifndef DATASENDER_H
 #define DATASENDER_H
 #include <QString>
+#include <QObject>
+#include <QtNetwork/QNetworkAccessManager>
 
-class DataSender
+class DataSender : public QObject
 {
+    Q_OBJECT
 public:
     DataSender();
 
@@ -12,6 +15,7 @@ public:
 private:
     QString _ipAddr;        // TODO: refactor me to IPAddr type
     unsigned int _port;
+    QNetworkAccessManager _networkMgr;
 };
 
 #endif // DATASENDER_H

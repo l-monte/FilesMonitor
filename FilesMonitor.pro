@@ -1,5 +1,5 @@
 QT -= gui
-QT += widgets
+QT += widgets network
 
 CONFIG += c++17
 CONFIG += console

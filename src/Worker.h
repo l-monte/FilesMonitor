@@ -11,9 +11,8 @@
 
 class QString;
 
-class Worker : public QObject, public QRunnable
+class Worker : public QRunnable
 {
-    Q_OBJECT
 public:
     Worker(const WorkerData& data);
 

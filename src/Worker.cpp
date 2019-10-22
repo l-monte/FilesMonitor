@@ -11,7 +11,7 @@ Worker::Worker(const WorkerData& data) :
     _writer(data.archivePath),
     _sender()
 {
-    qDebug() << "[Worker::Worker] c-tor";
+    qDebug() << "[Worker::Worker] c-tor, current threadId = " + QThread::;
 
     _reader._sendLogPortionHandler = [this](const QList<QString>& fileContent){ this->sendLogPortionHandler(fileContent); };
 }
