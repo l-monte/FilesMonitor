@@ -20,6 +20,7 @@ void Worker::run()
     _reader.readFile();
 
     connect(&_reader, &FileReader::receivedLogsForFurtherProcessing, &_writer, &ArchiveWriter::write);
+    connect()
 }
 
 void Worker::sendLogPortionHandler(const QList<QString>& logs)

@@ -3,7 +3,6 @@
 
 #include "FilesReader/FileReader.h"
 #include "ArchiveWriter/ArchiveWriter.h"
-#include "DataSender/DataSender.h"
 #include "MonitorDefs.h"
 #include <QRunnable>
 #include <QObject>
@@ -11,8 +10,9 @@
 
 class QString;
 
-class Worker : public QRunnable
+class Worker : public QObject, public QRunnable
 {
+    Q_OBJECT
 public:
     Worker(const WorkerData& data);
 
@@ -21,6 +21,9 @@ public:
     Worker& operator=(Worker&& o) = delete;
     Worker& operator=(const Worker& o) = delete;
     ~Worker() = default;
+
+signals:
+    void sendData(QString data);
 
 protected:
     virtual void run();
@@ -34,7 +37,6 @@ private:
 
     FileReader _reader;
     ArchiveWriter _writer;
-    DataSender _sender;
 
 public:
     std::function<void(std::pair<QString, bool>)> _respHandler;

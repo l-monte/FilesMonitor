@@ -4,6 +4,13 @@
 #include <QDebug>
 #include "../MonitorConfig.h"
 #include <QApplication>
+#include "../GlobalDataSender.h"
+
+#include <QDebug>           //TODO: refactor
+#include <QUrl>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QtNetwork/QNetworkReply>
 using namespace std;
 
 FilesMonitorApp::FilesMonitorApp(const QString& rootDirectory, const QString& archiveDirectory, QObject *parent) :
@@ -34,6 +41,8 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
 
         worker->_respHandler = [this](std::pair<QString, bool> msg){ this->respHandler(msg); };
 
+        connect(worker, &Worker::sendData, this, [this](QString data){ qDebug() << "Odebralem sendData() signal."; sendDataToEndpoint(data); });
+
         if (_threadPool.tryStart(worker))
             qDebug() << "[FilesMonitorApp::onNewFileAdded] thread pool started.";
         else
@@ -60,4 +69,22 @@ void FilesMonitorApp::respHandler(std::pair<QString, bool> respMsg)
 FilesMonitorApp::~FilesMonitorApp()
 {
 
+}
+
+void FilesMonitorApp::sendDataToEndpoint(const QString& data)
+{
+    qDebug() << "\t[FilesMonitorApp::sendDataToEndpoint] start of function\n";
+    QUrl serviceUrl = QUrl("http://monte.free.beeceptor.com/test1/testFile");
+    QNetworkRequest request(serviceUrl);
+    QJsonObject json;
+    json.insert("data", data);
+    json.insert("userpass","xxxx");
+    QJsonDocument jsonDoc(json);
+    QByteArray jsonData= jsonDoc.toJson();
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+    request.setHeader(QNetworkRequest::ContentLengthHeader,QByteArray::number(jsonData.size()));
+
+//    connect(&_networkMgr, &QNetworkAccessManager::finished,
+//            this, [this](QNetworkReply *reply){ qDebug() << "\t [DataSender] received a response!!"; });
+    _networkMgr.post(request, jsonData);
 }

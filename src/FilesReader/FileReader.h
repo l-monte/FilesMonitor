@@ -21,6 +21,9 @@ public:
 
     void readFile();
 
+signals:
+    void receivedLogsForFurtherProcessing(const QList<QString>& data);
+
 public:
     std::function<void(const QList<QString>&)> _sendLogPortionHandler;
 

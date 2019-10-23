@@ -6,6 +6,7 @@
 #include <QVector>
 #include "../MonitorDefs.h"
 #include "../FileScanner.h"
+#include <QNetworkAccessManager>
 
 class Worker;
 
@@ -23,6 +24,7 @@ private slots:
 
 private:
     void respHandler(std::pair<QString, bool> respMsg);
+    void sendDataToEndpoint(const QString& data);
 
 private:
     QFileInfo _rootDir;
@@ -31,6 +33,7 @@ private:
     QThreadPool _threadPool;
 
     FileScanner _fileScanner;
+    QNetworkAccessManager _networkMgr;
 };
 
 #endif // FILESMONITORAPP_H
