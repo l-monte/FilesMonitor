@@ -6,7 +6,7 @@ ArchiveWriter::ArchiveWriter(const QString& archDir) : _file(archDir)
 
 }
 
-void ArchiveWriter::write(const QList<QString>& logChunk)
+void ArchiveWriter::write(const QString& line)
 {
     qDebug() << "\tINFO: [ArchiveWriter::write] received log portion from FileReader";
 
@@ -15,10 +15,10 @@ void ArchiveWriter::write(const QList<QString>& logChunk)
         qDebug() << "\tINFO: [ArchiveWriter::write] _file is successfully opened.";
         QTextStream output(&_file);
 
-        for (auto line: logChunk)
-        {
+        //for (auto line: logChunk)
+        //{
             output << line << "\n";
-        }
+        //}
         _file.close();
     }
     else

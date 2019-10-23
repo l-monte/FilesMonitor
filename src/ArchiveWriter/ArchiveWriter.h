@@ -10,7 +10,7 @@ public:
     ArchiveWriter(const QString& archDir);
 
 public slots:
-    void write(const QList<QString>& datachunk);
+    void write(const QString& datachunk);
 
 private:
     QFile _file;

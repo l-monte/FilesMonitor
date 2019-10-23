@@ -33,12 +33,13 @@ void FileReader::readFile()
             if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK == 0)
             {
                 //_sendLogPortionHandler(lines);
-                receivedLogsForFurtherProcessing(lines);         // TODO
+                emit receivedLogsForFurtherProcessing(lines.last());         // TODO
             }
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0)
         {
-            receivedLogsForFurtherProcessing(lines);         // TODO
+            qDebug() << "Emituje tu cos kur*a?";
+            emit receivedLogsForFurtherProcessing(lines.last());         // TODO
             _file.close();
         }
     }
