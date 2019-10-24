@@ -36,12 +36,12 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
     if (counter == 1)
     {
         qDebug() << "[FilesMonitorApp::onNewFileAdded] starting thread pool for file: " << file;
-        Worker *worker = new Worker( WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file, "192.168.54.2"} );       // TODO
+        Worker *worker = new Worker(this, WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file, "192.168.54.2"} );       // TODO
         worker->setAutoDelete(true);
 
         worker->_respHandler = [this](std::pair<QString, bool> msg){ this->respHandler(msg); };
 
-        connect(worker, &Worker::sendData, this, [this](QString data){ qDebug() << "Odebralem sendData() signal."; sendDataToEndpoint(data); });
+        //connect(worker, &Worker::sendData, this, [this](const QList,QString data){ qDebug() << "Odebralem sendData() signal."; sendDataToEndpoint(data); });
 
         if (_threadPool.tryStart(worker))
             qDebug() << "[FilesMonitorApp::onNewFileAdded] thread pool started.";
@@ -71,14 +71,19 @@ FilesMonitorApp::~FilesMonitorApp()
 
 }
 
-void FilesMonitorApp::sendDataToEndpoint(const QString& data)
+bool FilesMonitorApp::funkcjaDoUsuniecia(const QString& data)
+{
+    qDebug() << "funkcjaDoUsuniecia(QString): " << data;
+}
+
+bool FilesMonitorApp::sendDataToEndpoint(const QList<QString>& data)
 {
     qDebug() << "\t[FilesMonitorApp::sendDataToEndpoint] start of function\n";
     QUrl serviceUrl = QUrl("http://monte.free.beeceptor.com/test1/testFile");
     QNetworkRequest request(serviceUrl);
     QJsonObject json;
-    json.insert("data", data);
-    json.insert("userpass","xxxx");
+    for (auto it = data.begin(); it != data.end(); it++)
+        json.insert("data", *it);
     QJsonDocument jsonDoc(json);
     QByteArray jsonData= jsonDoc.toJson();
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");

@@ -17,6 +17,9 @@ public:
     FilesMonitorApp(const QString& rootDirectory, const QString& archiveDirectory, QObject *parent = nullptr);
     virtual ~FilesMonitorApp();
 
+    bool funkcjaDoUsuniecia(const QString&);
+    bool sendDataToEndpoint(const QList<QString>& data);
+
 private slots:
     void onNewFileAdded(const QString& file);
     void onFileModified(const QString& file);
@@ -24,7 +27,6 @@ private slots:
 
 private:
     void respHandler(std::pair<QString, bool> respMsg);
-    void sendDataToEndpoint(const QString& data);
 
 private:
     QFileInfo _rootDir;

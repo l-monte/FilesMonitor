@@ -4,16 +4,17 @@
 #include <QFile>
 #include "MonitorConfig.h"
 #include "MonitorDefs.h"
+#include "FilesMonitorApp/FilesMonitorApp.h"
 
 namespace
 {
 constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 1310;
 }
 
-Worker::Worker(QNetworkAccessManager* networkMgr, const WorkerData& data) :
+Worker::Worker(FilesMonitorApp* mainApp, const WorkerData& data) :
     _logFile(data.filePath),
     _archiveFile(data.archivePath),
-    _networkMgr(networkMgr)
+    _mainApp(mainApp)
 {
     //_reader._sendLogPortionHandler = [this](const QList<QString>& fileContent){ this->sendLogPortionHandler(fileContent); };
 }
@@ -54,20 +55,23 @@ void Worker::read()
 
             if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK == 0)
             {
+                sendDataToRESTendpoint(lines);
                 write(lines);
             }
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0)
         {
             write(lines);
+            sendDataToRESTendpoint(lines);
             _logFile.close();
         }
     }
 }
 
-void Worker::sendDataToRESTendpoint()
+void Worker::sendDataToRESTendpoint(const QList<QString>& data)
 {
-
+    qDebug() << "[Worker::sendDataToRESTendpoint] calling invoke method.";
+    QMetaObject::invokeMethod(_mainApp, [=]{ _mainApp->sendDataToEndpoint(data); }, Qt::QueuedConnection);
 }
 
 void Worker::sendLogPortionHandler(const QString& logs)

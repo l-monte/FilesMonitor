@@ -9,17 +9,13 @@
 #include <functional>
 
 class QString;
-class QNetworkAccessManager;
-
-typedef QList<QString> StringList;
-//qRegisterMetaType< StringList >( "StringList" );
-Q_DECLARE_METATYPE(StringList);
+class FilesMonitorApp;
 
 class Worker : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    Worker(QNetworkAccessManager* networkMgr, const WorkerData& data);
+    Worker(FilesMonitorApp* mainApp, const WorkerData& data);
 
     Worker(const Worker& o) = delete;
     Worker(Worker&& o) = delete;
@@ -34,7 +30,7 @@ protected:
     virtual void run();
     void write(const QList<QString>& line);
     void read();
-    void sendDataToRESTendpoint();
+    void sendDataToRESTendpoint(const QList<QString>& data);
 
     void sendLogPortionHandler(const QString& logs);
 
@@ -42,7 +38,7 @@ private:
     QFile _logFile;
     QFile _archiveFile;
 
-    QNetworkAccessManager* _networkMgr;
+    FilesMonitorApp* _mainApp;
 
 public:
     std::function<void(std::pair<QString, bool>)> _respHandler;
