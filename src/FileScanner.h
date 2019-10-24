@@ -29,7 +29,7 @@ private:
 private:
     QDir _rootDirectory;
     QTimer* _fileScanningTimer;
-    QFileSystemWatcher _watcher;        // TODO zastanowić się, czy tworzyć takie rzeczy jako membery, czy wskaźniki
+    QFileSystemWatcher _watcher;
 };
 
 #endif // FILESCANNER_H

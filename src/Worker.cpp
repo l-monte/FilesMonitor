@@ -16,7 +16,6 @@ Worker::Worker(FilesMonitorApp* mainApp, const WorkerData& data) :
     _archiveFile(data.archivePath),
     _mainApp(mainApp)
 {
-    //_reader._sendLogPortionHandler = [this](const QList<QString>& fileContent){ this->sendLogPortionHandler(fileContent); };
 }
 
 void Worker::run()
@@ -72,11 +71,5 @@ void Worker::sendDataToRESTendpoint(const QList<QString>& data)
 {
     qDebug() << "[Worker::sendDataToRESTendpoint] calling invoke method.";
     QMetaObject::invokeMethod(_mainApp, [=]{ _mainApp->sendDataToEndpoint(data); }, Qt::QueuedConnection);
-}
-
-void Worker::sendLogPortionHandler(const QString& logs)
-{
-//    _writer.write(logs);
-//    emit sendData(logs);
 }
 

@@ -32,8 +32,6 @@ protected:
     void read();
     void sendDataToRESTendpoint(const QList<QString>& data);
 
-    void sendLogPortionHandler(const QString& logs);
-
 private:
     QFile _logFile;
     QFile _archiveFile;

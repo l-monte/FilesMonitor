@@ -23,15 +23,12 @@ FileScanner::FileScanner(const QString& dirPath, QObject *parent) : QObject(pare
 
 void FileScanner::scanFiles()
 {
-    qDebug() << "INFO: [FileScanner] start of function";
     QStringList fileList = _rootDirectory.entryList(QDir::Files);
 
     for (int i = 0; i < fileList.size(); ++i)
     {
         if (isNewFile(fileList[i]))
         {
-            qDebug() << "INFO: [FileScanner] Added new file: " << fileList[i];
-
             _watcher.addPath(_rootDirectory.path() + "/" + fileList[i]);
             emit newFileAdded(fileList[i]);
         }
@@ -42,13 +39,10 @@ void FileScanner::onFileChanged(const QString& fileName)
 {
     if (QFileInfo::exists(fileName))
     {
-        qDebug() << "INFO: [FileScanner] emitting fileModified() signal.";
         emit fileModified(fileName);
     }
     else
     {
-        qDebug() << "INFO: [FileScanner] Remove file: " << fileName;
-        qDebug() << "INFO: [FileScanner] emitting fileRemoved() signal.";
         _watcher.removePath(fileName);
         emit fileRemoved(fileName);
     }
@@ -58,20 +52,3 @@ bool FileScanner::isNewFile(const QString& fileName) const
 {
     return (not _watcher.files().contains(_rootDirectory.path() + "/" + fileName));
 }
-
-// TODO usunąć poniższe
-/*
- *         QFile file(_rootDirectory.path() + "/" + fileList[i]);
-        if (file.open(QIODevice::ReadWrite))
-        {
-            qDebug() << "File: " << file.fileName() << " opened!";
-
-            QTextStream instream(&file);
-            QString line = instream.readLine();
-
-            qDebug() << "first line: " << line;
-            file.close();
-        }
-        else
-            qDebug() << "File: " << file.fileName() << " not opened..";
-*/

@@ -4,9 +4,6 @@
 #include <QDebug>
 #include "../MonitorConfig.h"
 #include <QApplication>
-#include "../GlobalDataSender.h"
-
-#include <QDebug>           //TODO: refactor
 #include <QUrl>
 #include <QJsonObject>
 #include <QJsonDocument>
@@ -39,10 +36,6 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
         Worker *worker = new Worker(this, WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file, "192.168.54.2"} );       // TODO
         worker->setAutoDelete(true);
 
-        worker->_respHandler = [this](std::pair<QString, bool> msg){ this->respHandler(msg); };
-
-        //connect(worker, &Worker::sendData, this, [this](const QList,QString data){ qDebug() << "Odebralem sendData() signal."; sendDataToEndpoint(data); });
-
         if (_threadPool.tryStart(worker))
             qDebug() << "[FilesMonitorApp::onNewFileAdded] thread pool started.";
         else
@@ -61,22 +54,11 @@ void FilesMonitorApp::onFileRemoved(const QString& file)
     qDebug() << "INFO: [FilesMonitorApp] got fileRemoved signal (file: " << file << ").";
 }
 
-void FilesMonitorApp::respHandler(std::pair<QString, bool> respMsg)
-{
-    qDebug() << "[FilesMonitorApp::respHandler] received " << respMsg.second << " as finished status for file: " << respMsg.first;
-}
-
 FilesMonitorApp::~FilesMonitorApp()
 {
-
 }
 
-bool FilesMonitorApp::funkcjaDoUsuniecia(const QString& data)
-{
-    qDebug() << "funkcjaDoUsuniecia(QString): " << data;
-}
-
-bool FilesMonitorApp::sendDataToEndpoint(const QList<QString>& data)
+void FilesMonitorApp::sendDataToEndpoint(const QList<QString>& data)
 {
     qDebug() << "\t[FilesMonitorApp::sendDataToEndpoint] start of function\n";
     QUrl serviceUrl = QUrl("http://monte.free.beeceptor.com/test1/testFile");
@@ -89,7 +71,5 @@ bool FilesMonitorApp::sendDataToEndpoint(const QList<QString>& data)
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
     request.setHeader(QNetworkRequest::ContentLengthHeader,QByteArray::number(jsonData.size()));
 
-//    connect(&_networkMgr, &QNetworkAccessManager::finished,
-//            this, [this](QNetworkReply *reply){ qDebug() << "\t [DataSender] received a response!!"; });
     _networkMgr.post(request, jsonData);
 }
