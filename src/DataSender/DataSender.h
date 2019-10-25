@@ -4,16 +4,18 @@
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
-class DataSender
+class DataSender : public QObject
 {
+    Q_OBJECT
 public:
     DataSender();
-
     void send(const QList<QString>& data);
+
+signals:
+    void finished();
 
 private:
     QString _ipAddr;        // TODO: refactor me to IPAddr type
-    unsigned int _port;
     QNetworkAccessManager _networkMgr;
 };
 

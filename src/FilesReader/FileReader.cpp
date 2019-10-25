@@ -32,14 +32,12 @@ void FileReader::readFile()
 
             if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK == 0)
             {
-                //_sendLogPortionHandler(lines);
-                emit receivedLogsForFurtherProcessing(lines.last());         // TODO
+                emit sendReadData(lines);
             }
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0)
         {
-            qDebug() << "Emituje tu cos kur*a?";
-            emit receivedLogsForFurtherProcessing(lines.last());         // TODO
+            emit sendReadData(lines);
             _file.close();
         }
     }

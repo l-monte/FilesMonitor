@@ -6,7 +6,6 @@
 #include <QVector>
 #include "../MonitorDefs.h"
 #include "../FileScanner.h"
-#include <QNetworkAccessManager>
 
 class Worker;
 
@@ -17,7 +16,6 @@ public:
     FilesMonitorApp(const QString& rootDirectory, const QString& archiveDirectory, QObject *parent = nullptr);
     virtual ~FilesMonitorApp();
 
-    void sendDataToEndpoint(const QList<QString>& data);
 
 private slots:
     void onNewFileAdded(const QString& file);
@@ -31,7 +29,6 @@ private:
     QThreadPool _threadPool;
 
     FileScanner _fileScanner;
-    QNetworkAccessManager _networkMgr;
 };
 
 #endif // FILESMONITORAPP_H

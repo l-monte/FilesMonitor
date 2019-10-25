@@ -22,10 +22,7 @@ public:
     void readFile();
 
 signals:
-    void receivedLogsForFurtherProcessing(const QString& data);
-
-public:
-    std::function<void(const QList<QString>&)> _sendLogPortionHandler;
+    void sendReadData(const QList<QString>& data);
 
 private:
     QFile _file;
