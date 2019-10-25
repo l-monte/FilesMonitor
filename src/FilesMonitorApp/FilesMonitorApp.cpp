@@ -33,13 +33,12 @@ void FilesMonitorApp::onNewFileAdded(const QString& file)
     if (counter == 1)
     {
         qDebug() << "[FilesMonitorApp::onNewFileAdded] starting thread pool for file: " << file;
-        Worker *worker = new Worker(WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file, "192.168.54.2"} );       // TODO
+        Worker *worker = new Worker(WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file} );
         worker->setAutoDelete(true);
 
-        if (_threadPool.tryStart(worker))
-            qDebug() << "[FilesMonitorApp::onNewFileAdded] thread pool started.";
-        else
-            qDebug() << "ERROR: [FilesMonitorApp::onNewFileAdded] New worker not started!";
+        connect(worker, &Worker::finished, this, &FilesMonitorApp::onWorkerFinished, Qt::QueuedConnection);
+
+        _threadPool.start(worker);
     }
 
     counter++;
@@ -52,6 +51,11 @@ void FilesMonitorApp::onFileModified(const QString& file)
 void FilesMonitorApp::onFileRemoved(const QString& file)
 {
     qDebug() << "INFO: [FilesMonitorApp] got fileRemoved signal (file: " << file << ").";
+}
+
+void FilesMonitorApp::onWorkerFinished(const QString& fileName)
+{
+    qDebug() << "INFO: [FilesMonitorApp::onWorkerFinished] Received filename is: " + fileName;
 }
 
 FilesMonitorApp::~FilesMonitorApp()

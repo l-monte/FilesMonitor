@@ -4,9 +4,8 @@
 
 struct WorkerData
 {
-    QString filePath;
-    QString archivePath;
-    QString endpointAddr;
+    const QString filePath;
+    const QString archivePath;
 };
 
 #endif // MONITORDEFS_H

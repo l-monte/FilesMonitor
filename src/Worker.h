@@ -23,6 +23,9 @@ public:
     Worker& operator=(const Worker& o) = delete;
     ~Worker() = default;
 
+signals:
+    void finished(const QString& fileName);
+
 protected:
     virtual void run();
 

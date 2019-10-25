@@ -38,4 +38,5 @@ void Worker::run()
     loop.exec();
 
     qDebug() << "\t[Worker::run()] end of function. ";
+    emit finished(_logFile.fileName());
 }

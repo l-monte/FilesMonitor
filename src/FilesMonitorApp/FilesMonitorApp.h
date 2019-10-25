@@ -21,6 +21,7 @@ private slots:
     void onNewFileAdded(const QString& file);
     void onFileModified(const QString& file);
     void onFileRemoved(const QString& file);
+    void onWorkerFinished(const QString& fileName);
 
 private:
     QFileInfo _rootDir;

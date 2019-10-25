@@ -1,21 +1,19 @@
 #include "DataSender.h"
-#include <QDebug>           //TODO: refactor
 #include <QUrl>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QtNetwork/QNetworkReply>
-DataSender::DataSender() : _ipAddr("http://monte.free.beeceptor.com/luki/testFromWorker"), _networkMgr()
+#include "../MonitorConfig.h"
+DataSender::DataSender() : _peerAddr(PEER_ADDR), _networkMgr()
 {
 
 }
 
 void DataSender::send(const QList<QString>& data)
 {
-    qDebug() << "\tINFO: [DataSender::send] sending data to endpoint: " << data;
-
-    QUrl serviceUrl = QUrl(_ipAddr);
+    QUrl serviceUrl = QUrl(_peerAddr);
     QNetworkRequest request(serviceUrl);
-    QJsonObject json;
+    QJsonObject json;                   // TODO add proper message format
     json.insert("data", data.first());
     QJsonDocument jsonDoc(json);
     QByteArray jsonData= jsonDoc.toJson();

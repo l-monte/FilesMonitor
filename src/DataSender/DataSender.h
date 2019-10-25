@@ -15,7 +15,7 @@ signals:
     void finished();
 
 private:
-    QString _ipAddr;        // TODO: refactor me to IPAddr type
+    QString _peerAddr;
     QNetworkAccessManager _networkMgr;
 };
 
