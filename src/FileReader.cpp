@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QDebug>
-#include "../MonitorConfig.h"
+#include "MonitorConfig.h"
 #include <QList>
 
 FileReader::FileReader(const QString& filePath) :

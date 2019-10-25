@@ -1,12 +1,10 @@
 #ifndef WORKER_H
 #define WORKER_H
 
-#include "FilesReader/FileReader.h"
-#include "ArchiveWriter/ArchiveWriter.h"
+#include <QFile>
 #include "MonitorDefs.h"
 #include <QRunnable>
 #include <QObject>
-#include <functional>
 
 class QString;
 class FilesMonitorApp;

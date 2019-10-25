@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QThreadPool>
 #include <QVector>
-#include "../MonitorDefs.h"
-#include "../FileScanner.h"
+#include "MonitorDefs.h"
+#include "FileScanner.h"
 
 class Worker;
 

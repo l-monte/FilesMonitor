@@ -1,7 +1,6 @@
 #include "FileScanner.h"
 #include "MonitorConfig.h"
 #include <QDebug>       // TODO
-#include <QFileInfo>    // TODO
 
 FileScanner::FileScanner(const QString& dirPath, QObject *parent) : QObject(parent),
     _rootDirectory(dirPath),

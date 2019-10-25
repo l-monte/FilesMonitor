@@ -1,15 +1,12 @@
 #include "Worker.h"
-#include <QString>
-#include <QDebug>       // TODO
-#include <QFile>
+#include <QDebug>
+#include "FileReader.h"
+#include "ArchiveWriter.h"
 #include "MonitorConfig.h"
 #include "MonitorDefs.h"
-#include "FilesMonitorApp/FilesMonitorApp.h"
+#include "FilesMonitorApp.h"
 #include <QEventLoop>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QNetworkReply>
-#include "DataSender/DataSender.h"
+#include "DataSender.h"
 
 namespace
 {

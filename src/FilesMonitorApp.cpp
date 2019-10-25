@@ -1,8 +1,8 @@
 #include "FilesMonitorApp.h"
 #include <QThread>
-#include "../Worker.h"
+#include "Worker.h"
 #include <QDebug>
-#include "../MonitorConfig.h"
+#include "MonitorConfig.h"
 #include <QApplication>
 #include <QUrl>
 #include <QJsonObject>

@@ -18,19 +18,19 @@ DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs depr
 
 SOURCES += \
     src/FileScanner.cpp \
-    src/ArchiveWriter/ArchiveWriter.cpp \
-    src/DataSender/DataSender.cpp \
-    src/FilesReader/FileReader.cpp \
+    src/ArchiveWriter.cpp \
+    src/DataSender.cpp \
+    src/FileReader.cpp \
     src/main.cpp \
     src/Worker.cpp \
-    src/FilesMonitorApp/FilesMonitorApp.cpp
+    src/FilesMonitorApp.cpp
 
 HEADERS += \
     src/FileScanner.h \
-    src/ArchiveWriter/ArchiveWriter.h \
-    src/DataSender/DataSender.h \
-    src/FilesMonitorApp/FilesMonitorApp.h \
-    src/FilesReader/FileReader.h \
+    src/ArchiveWriter.h \
+    src/DataSender.h \
+    src/FilesMonitorApp.h \
+    src/FileReader.h \
     src/MonitorConfig.h \
     src/MonitorDefs.h \
     src/Worker.h
