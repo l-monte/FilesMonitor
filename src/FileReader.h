@@ -24,6 +24,7 @@ public:
 
 signals:
     void sendReadData(const LogData& logData);
+    void deleteFile();
 
 private:
     QFile _file;

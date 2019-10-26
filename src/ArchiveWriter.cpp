@@ -21,3 +21,9 @@ void ArchiveWriter::write(const LogData& data)
     else
         qDebug() << "\tERROR: [ArchiveWriter::write] _file is unable to open.";
 }
+
+void ArchiveWriter::deleteFile() const
+{
+    if (not _file.remove(_file.fileName()))
+        qDebug() << "ERROR: [ArchiveWriter::deleteFile]: nable to remove file: " + _file.fileName();
+}

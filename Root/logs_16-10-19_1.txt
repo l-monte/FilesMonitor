@@ -7,4 +7,4 @@ logs: 16.10.19#1 linia6
 logs: 16.10.19#1 linia7
 logs: 16.10.19#1 linia8
 logs: 16.10.19#1 linia9
-logs: 16.10.19#1 linia10
+logs: 16.10.19#1 linia10 ffff

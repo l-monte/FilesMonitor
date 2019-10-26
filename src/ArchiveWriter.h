@@ -13,6 +13,7 @@ public:
 
 public slots:
     void write(const LogData& datachunk);
+    void deleteFile() const;
 
 private:
     QFile _file;
