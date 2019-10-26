@@ -8,3 +8,5 @@ logs: 18.10.19#2 linia7
 logs: 18.10.19#2 linia8
 logs: 18.10.19#2 linia9
 logs: 18.10.19#2 linia10
+logs: 18.10.19#2 linia11
+logs: 18.10.19#2 linia12

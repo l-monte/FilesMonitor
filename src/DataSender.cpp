@@ -6,7 +6,6 @@
 #include <QtNetwork/QNetworkReply>
 #include "MonitorConfig.h"
 #include "MonitorDefs.h"
-#include <QDebug>       // TODO
 
 namespace
 {
@@ -21,8 +20,6 @@ void DataSender::send(const LogData& data)
 {
     QUrl serviceUrl = QUrl(_peerAddr + FILES_PATH + data.fileName);
     QNetworkRequest request(serviceUrl);
-
-    qDebug () << "\t rozmiar danych do wyslania: " + data.logData.size();
 
     QJsonArray logData;
     QJsonObject jsonObject;

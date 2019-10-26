@@ -1,9 +1,9 @@
 #ifndef FILESMONITORAPP_H
 #define FILESMONITORAPP_H
-#include <QFileInfo>
+#include <QMap>
 #include <QObject>
+#include <QFileInfo>
 #include <QThreadPool>
-#include <QVector>
 #include "MonitorDefs.h"
 #include "FileScanner.h"
 
@@ -30,6 +30,8 @@ private:
     QThreadPool _threadPool;
 
     FileScanner _fileScanner;
+
+    QMap<FileName, WorkerState> _fileToWorkerStateMap;
 };
 
 #endif // FILESMONITORAPP_H

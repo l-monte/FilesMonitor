@@ -8,7 +8,7 @@
 #include <QEventLoop>
 #include "DataSender.h"
 
-Worker::Worker(const WorkerData& data) :
+Worker::Worker(const WorkerSetupData& data) :
     _logFile(data.filePath),
     _archiveFile(data.archivePath)
 {
@@ -29,7 +29,7 @@ void Worker::run()
 
     loop.exec();
 
-    qDebug() << "\t[Worker::run()] end of function. ";
+    qDebug() << "\t[Worker::run()] Worker finishes itd work for file: " + retrieveLogFileName();
 
     emit finished(retrieveLogFileName());
 }

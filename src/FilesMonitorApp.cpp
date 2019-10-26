@@ -4,18 +4,20 @@
 #include <QDebug>
 #include "MonitorConfig.h"
 #include <QApplication>
-#include <QUrl>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QtNetwork/QNetworkReply>
 using namespace std;
+
+namespace
+{
+constexpr quint64 START_LINE_NUMBER = 0;
+}
 
 FilesMonitorApp::FilesMonitorApp(const QString& rootDirectory, const QString& archiveDirectory, QObject *parent) :
     QObject(parent),
     _rootDir(rootDirectory),
     _archDir(archiveDirectory),
     _threadPool(this),
-    _fileScanner(rootDirectory)
+    _fileScanner(rootDirectory),
+    _fileToWorkerStateMap({})
 {
     _threadPool.setMaxThreadCount(THREAD_NUMBER);
 
@@ -25,37 +27,49 @@ FilesMonitorApp::FilesMonitorApp(const QString& rootDirectory, const QString& ar
     _fileScanner.scanFiles();
 }
 
-void FilesMonitorApp::onNewFileAdded(const QString& file)
+void FilesMonitorApp::onNewFileAdded(const QString& fileName)
 {
-    static int counter = 1; // TODO - później usunać przy przejściu na wiele wątków
-    qDebug() << "INFO: [FilesMonitorApp] got newFileAdded signal (file: " << file << ").";
+    qDebug() << "INFO: [FilesMonitorApp::onNewFileAdded] got onNewFileAdded signal (file: " << fileName << ").";
+    Worker *worker = new Worker(WorkerSetupData{_rootDir.absoluteFilePath() + "/" + fileName, _archDir.absoluteFilePath() + "/" + fileName} );
+    worker->setAutoDelete(true);
 
-    if (counter == 1)
+    connect(worker, &Worker::finished, this, &FilesMonitorApp::onWorkerFinished, Qt::QueuedConnection);
+
+    _threadPool.start(worker);
+
+    _fileToWorkerStateMap.insert(fileName, WorkerState::RUNNING);
+}
+
+void FilesMonitorApp::onFileModified(const QString& fileName)
+{
+    qDebug() << "INFO: [FilesMonitorApp::onFileModified] got fileModified signal (file: " << fileName << ").";
+
+    if (not _fileToWorkerStateMap.contains(fileName))
     {
-        qDebug() << "[FilesMonitorApp::onNewFileAdded] starting thread pool for file: " << file;
-        Worker *worker = new Worker(WorkerData{_rootDir.absoluteFilePath() + "/" + file, _archDir.absoluteFilePath() + "/" + file} );
-        worker->setAutoDelete(true);
-
-        connect(worker, &Worker::finished, this, &FilesMonitorApp::onWorkerFinished, Qt::QueuedConnection);
-
-        _threadPool.start(worker);
+        qDebug() << "INFO: [FilesMonitorApp::onFileModified] file is not contained in the map -> calling onNewFileAdded slot.";
+        onNewFileAdded(fileName);
+        return;
     }
 
-    counter++;
+    if (WorkerState::FILE_DELETED == _fileToWorkerStateMap.value(fileName))
+    {
+        qDebug() << "INFO: [FilesMonitorApp::onFileModified] file is deleted -> calling onNewFileAdded slot.";
+        onNewFileAdded(fileName);
+        return;
+    }
 }
+void FilesMonitorApp::onFileRemoved(const QString& fileName)
+{
+    qDebug() << "INFO: [FilesMonitorApp::onFileRemoved] got fileRemoved signal (file: " << fileName << ").";
 
-void FilesMonitorApp::onFileModified(const QString& file)
-{
-    qDebug() << "INFO: [FilesMonitorApp] got fileModified signal (file: " << file << ").";
-}
-void FilesMonitorApp::onFileRemoved(const QString& file)
-{
-    qDebug() << "INFO: [FilesMonitorApp] got fileRemoved signal (file: " << file << ").";
+    _fileToWorkerStateMap.insert(fileName, WorkerState::FILE_DELETED);
 }
 
 void FilesMonitorApp::onWorkerFinished(const QString& fileName)
 {
     qDebug() << "INFO: [FilesMonitorApp::onWorkerFinished] Received filename is: " + fileName;
+
+    _fileToWorkerStateMap.insert(fileName, WorkerState::FILE_DELETED);
 }
 
 FilesMonitorApp::~FilesMonitorApp()

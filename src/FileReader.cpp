@@ -15,7 +15,7 @@ FileReader::FileReader(const QString& filePath) :
 // TODO: 2 MB -> 2097152 B -> 2 097 152 / (400 chars * 4B) ~ 1310
 namespace
 {
-constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 2;//1310;
+constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 1310;
 }
 
 void FileReader::readFile()
@@ -45,12 +45,17 @@ void FileReader::readFile()
                 emit sendReadData(data);
                 data.logData.clear();
             }
+
+//            qDebug() << "\tSleeping thread for file: " + fileInfo.fileName() + "...";
+//            QThread::msleep(3000);
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0 and isFileDeleted == false)
         {
             emit sendReadData(data);
             data.logData.clear();
-            _file.close();
+            if (not _file.remove())
+                qDebug() << "ERROR [FileReader::readFile] Error during removing " + fileInfo.fileName() + " file";
+
         }
     }
 }

@@ -13,7 +13,7 @@ class Worker : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    Worker(const WorkerData& data);
+    Worker(const WorkerSetupData& data);
 
     Worker(const Worker& o) = delete;
     Worker(Worker&& o) = delete;
