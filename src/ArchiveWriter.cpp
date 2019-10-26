@@ -8,7 +8,7 @@ ArchiveWriter::ArchiveWriter(const QString& archDir) : _file(archDir)
 
 void ArchiveWriter::write(const LogData& data)
 {
-    if (_file.open(QFile::WriteOnly | QFile::Text))
+    if (_file.open(QFile::Append | QFile::Text))
     {
         QTextStream output(&_file);
 
