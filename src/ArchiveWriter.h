@@ -3,6 +3,8 @@
 #include <QString>
 #include <QFile>
 
+struct LogData;
+
 class ArchiveWriter : public QObject
 {
     Q_OBJECT
@@ -10,7 +12,7 @@ public:
     ArchiveWriter(const QString& archDir);
 
 public slots:
-    void write(const QList<QString>& datachunk);
+    void write(const LogData& datachunk);
 
 private:
     QFile _file;

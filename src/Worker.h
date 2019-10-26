@@ -28,6 +28,8 @@ protected:
     virtual void run();
 
 private:
+    QString retrieveLogFileName() const;
+
     QFile _logFile;
     QFile _archiveFile;
 };

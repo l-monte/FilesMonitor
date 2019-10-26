@@ -1,17 +1,18 @@
 #include "ArchiveWriter.h"
+#include "MonitorDefs.h"
 #include <QDebug>
 
 ArchiveWriter::ArchiveWriter(const QString& archDir) : _file(archDir)
 {
 }
 
-void ArchiveWriter::write(const QList<QString>& data)
+void ArchiveWriter::write(const LogData& data)
 {
     if (_file.open(QFile::WriteOnly | QFile::Text))
     {
         QTextStream output(&_file);
 
-        for (auto line: data)
+        for (auto line: data.logData)       //TODO
         {
             output << line << "\n";
         }

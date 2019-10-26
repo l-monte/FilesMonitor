@@ -8,11 +8,6 @@
 #include <QEventLoop>
 #include "DataSender.h"
 
-namespace
-{
-constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 1310;
-}
-
 Worker::Worker(const WorkerData& data) :
     _logFile(data.filePath),
     _archiveFile(data.archivePath)
@@ -35,5 +30,12 @@ void Worker::run()
     loop.exec();
 
     qDebug() << "\t[Worker::run()] end of function. ";
-    emit finished(_logFile.fileName());
+
+    emit finished(retrieveLogFileName());
+}
+
+QString Worker::retrieveLogFileName() const
+{
+    QFileInfo info(_logFile);
+    return info.fileName();
 }

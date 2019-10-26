@@ -6,6 +6,7 @@
 #include <functional>
 
 class QTimer;
+struct LogData;
 
 class FileReader : public QObject
 {
@@ -22,7 +23,7 @@ public:
     void readFile();
 
 signals:
-    void sendReadData(const QList<QString>& data);
+    void sendReadData(const LogData& logData);
 
 private:
     QFile _file;

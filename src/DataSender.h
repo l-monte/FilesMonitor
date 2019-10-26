@@ -4,12 +4,14 @@
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
+struct LogData;
+
 class DataSender : public QObject
 {
     Q_OBJECT
 public:
     DataSender();
-    void send(const QList<QString>& data);
+    void send(const LogData& data);
 
 signals:
     void finished();

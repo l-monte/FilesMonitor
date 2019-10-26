@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
     }
 
     FilesMonitorApp app(argv[1], argv[2], &a);
-
     return a.exec();
 }
 

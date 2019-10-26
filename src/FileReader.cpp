@@ -4,7 +4,7 @@
 #include <QFileInfo>
 #include <QDebug>
 #include "MonitorConfig.h"
-#include <QList>
+#include "MonitorDefs.h"
 
 FileReader::FileReader(const QString& filePath) :
     _file(filePath)
@@ -23,21 +23,24 @@ void FileReader::readFile()
     {
         quint64 lineCnt = 1;
         QTextStream input(&_file);
-        QList<QString> lines{};
+        QFileInfo fileInfo(_file);
+        LogData data{fileInfo.fileName(), {}};
 
         while (not input.atEnd())
         {
-            lines.push_back(input.readLine(LOG_LINE_LENGTH));
+            data.logData.push_back(input.readLine(LOG_LINE_LENGTH));
             ++lineCnt;
 
             if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK == 0)
             {
-                emit sendReadData(lines);
+                emit sendReadData(data);
+                data.logData.clear();
             }
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0)
         {
-            emit sendReadData(lines);
+            emit sendReadData(data);
+            data.logData.clear();
             _file.close();
         }
     }

@@ -2,22 +2,35 @@
 #include <QUrl>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QtNetwork/QNetworkReply>
 #include "MonitorConfig.h"
-DataSender::DataSender() : _peerAddr(PEER_ADDR), _networkMgr()
-{
+#include "MonitorDefs.h"
+#include <QDebug>       // TODO
 
+namespace
+{
+const QString FILES_PATH = "files/";
 }
 
-void DataSender::send(const QList<QString>& data)
+DataSender::DataSender() : _peerAddr(PEER_ADDR), _networkMgr()
 {
-    QUrl serviceUrl = QUrl(_peerAddr);
+}
+
+void DataSender::send(const LogData& data)
+{
+    QUrl serviceUrl = QUrl(_peerAddr + FILES_PATH + data.fileName);
     QNetworkRequest request(serviceUrl);
 
-    QJsonObject json;
-    json.insert("data", data.first());
+    qDebug () << "\t rozmiar danych do wyslania: " + data.logData.size();
 
-    QJsonDocument jsonDoc(json);
+    QJsonArray logData;
+    QJsonObject jsonObject;
+    for (auto& line : data.logData)
+        logData.push_back(line);
+    jsonObject.insert("Log data", logData);
+
+    QJsonDocument jsonDoc(jsonObject);
     QByteArray jsonData= jsonDoc.toJson();
     request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
     request.setHeader(QNetworkRequest::ContentLengthHeader,QByteArray::number(jsonData.size()));
