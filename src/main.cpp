@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
+#include "Logger.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
     if (argc != ENTRY_PARAM_NUMBER)
     {
         qDebug() << "ERROR: The parameters number is wrong!";
+        Logger::instance().log(Logger::ERROR, "The parameters number is wrong!");
         a.quit();
 
         return -1;
@@ -21,6 +23,7 @@ int main(int argc, char *argv[])
           (not QFileInfo(argv[1]).isDir()) or (not QFileInfo(argv[1]).isDir()) )
     {
         qDebug() << "ERROR: One of passed directories isn't exist.";
+        Logger::instance().log(Logger::ERROR, "One of passed directories isn't exist.");
         a.quit();
 
         return -1;

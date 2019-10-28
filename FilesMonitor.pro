@@ -21,6 +21,7 @@ SOURCES += \
     src/ArchiveWriter.cpp \
     src/DataSender.cpp \
     src/FileReader.cpp \
+    src/Logger.cpp \
     src/main.cpp \
     src/Worker.cpp \
     src/FilesMonitorApp.cpp
@@ -31,6 +32,7 @@ HEADERS += \
     src/DataSender.h \
     src/FilesMonitorApp.h \
     src/FileReader.h \
+    src/Logger.h \
     src/MonitorConfig.h \
     src/MonitorDefs.h \
     src/Worker.h
