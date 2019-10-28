@@ -16,11 +16,9 @@ public:
 
     FileReader(const FileReader& o) = delete;
     FileReader(FileReader&& o) = delete;
-    FileReader& operator=(const FileReader& o) = delete;
-    FileReader& operator=(FileReader&& o) = delete;
     virtual ~FileReader() = default;
 
-    void readFile();
+    bool readFile();
 
 signals:
     void sendReadData(const LogData& logData);
