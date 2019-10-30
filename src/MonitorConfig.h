@@ -12,4 +12,9 @@ constexpr unsigned int LOG_LINE_LENGTH = 400;
 
 const QString PEER_ADDR("http://monte.free.beeceptor.com/");
 
+
+//Logger
+constexpr bool WRITE_TO_FILE_FLAG = true;
+const QString DEBUG_FILE("../debug.txt");
+
 #endif // MONITORCONFIG_H

@@ -1,0 +1,56 @@
+#include "Logger.h"
+#include <QFileInfo>
+#include <QTime>
+
+Logger::Logger() : _file(DEBUG_FILE)
+{
+    if (_file.exists())
+        _file.remove();
+}
+
+Logger& Logger::instance()
+{
+    static Logger logger;
+    return logger;
+}
+
+void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file, long line)
+{
+    std::lock_guard<std::mutex> guard(_mutex);
+
+    QFileInfo fInfo(file);
+    QString logStr = QTime::currentTime().toString() +
+            " [0x" + QString::number((long long)QThread::currentThread(), 16) + "] " +
+            getLevel(lvl) + " " +
+            fInfo.fileName() + ":" +
+            __LINE__ + " " +
+            txt;
+
+    qDebug() << logStr;
+
+    if (WRITE_TO_FILE_FLAG)
+        saveToFile(logStr);
+}
+
+void Logger::saveToFile(const QString& log)
+{
+    if (_file.open(QFile::Append | QFile::Text))
+    {
+        QTextStream output(&_file);
+
+        output << log;
+
+        _file.close();
+    }
+    else
+        qDebug() << "\tERROR: [Logger::saveToFile] _file is unable to open.";
+}
+
+QString Logger::getLevel(LOG_LEVEL lvl) const
+{
+    if (LOG_LEVEL::INFO == lvl) return "INFO";
+    if (LOG_LEVEL::WARN == lvl) return "WARN";
+    if (LOG_LEVEL::ERROR == lvl) return "ERROR";
+
+    return "UNKNOWN_LVL";
+}

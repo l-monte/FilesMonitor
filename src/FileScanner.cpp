@@ -13,7 +13,7 @@ FileScanner::FileScanner(const QString& dirPath, QObject *parent) : QObject(pare
     _fileScanningTimer->setInterval(SCANNING_TIMER_INTERVAL);
     _fileScanningTimer->start();
 
-    //connect(_fileScanningTimer, &QTimer::timeout, this, [this]{ /*TODO*/qDebug() << "sending scanner timeout..."; emit scannerTimeout(); });
+    connect(_fileScanningTimer, &QTimer::timeout, this, [this]{ /*TODO*/qDebug() << "sending scanner timeout..."; emit scannerTimeout(); });
 
     connect(&_watcher, &QFileSystemWatcher::directoryChanged, this, [this]{ /*qDebug() << "FileScanner: received directoryChanged() signal.";*/ scanFiles(); });
     connect(&_watcher, &QFileSystemWatcher::fileChanged, this, [&](const QString& name){ /*qDebug() << "fileChanged() : " << name*/; onFileChanged(name); });
@@ -23,6 +23,9 @@ FileScanner::FileScanner(const QString& dirPath, QObject *parent) : QObject(pare
 void FileScanner::scanFiles()
 {
     QStringList fileList = _rootDirectory.entryList(QDir::Files);
+
+    if (fileList.empty())
+    qDebug() << "fileList is empty!" << endl;
 
     for (int i = 0; i < fileList.size(); ++i)
     {
