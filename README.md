@@ -15,6 +15,7 @@ Then, open your Qt Creator click File -> "Open File or Project..." and choose Qt
 * The application works as a deamon
 * The application takes two params - first is path to log directory, the second is path to archive folder
 * Each file after read operation is deleted. New logs in this file create the new file with the same name
+* The following REST endpoint address is set now: http://monte.free.beeceptor.com/ 
 * There is config file where the following params could be changed (MonitorConfig.h file):
     * line length limitation
     * number of threads
