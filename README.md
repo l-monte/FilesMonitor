@@ -9,5 +9,5 @@ The following points must be meet to build and run the application:</br>
     <li>download and install MinGW 7.3.0 64-bit (it supports C++17)</li>
 <ul>
 
-Based on above configuration, start your Qt Creator, click File -> "Open File or Project..." and choose Qt Project File from downloaded repo. 
-
+<p>Based on above configuration, start your Qt Creator, click File -> "Open File or Project..." and choose Qt Project File from downloaded repo. 
+</p>
