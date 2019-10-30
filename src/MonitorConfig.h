@@ -20,9 +20,4 @@ const QString DEBUG_FILE("../debug.txt");
 // Unit tests
 constexpr bool IS_UNIT_TEST_MODE = true;
 
-
-//Logger
-constexpr bool WRITE_TO_FILE_FLAG = true;
-const QString DEBUG_FILE("../debug.txt");
-
 #endif // MONITORCONFIG_H
