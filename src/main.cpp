@@ -3,13 +3,20 @@
 #include "MonitorConfig.h"
 #include <QFileInfo>
 #include "Logger.h"
-#include <QDir>
+#include "../test/UnitTestFramework.h"
+#include "MonitorConfig.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    if (argc != ENTRY_PARAM_NUMBER)
+    if (IS_UNIT_TEST_MODE)
+    {
+        UnitTestFramework utFramework;
+        utFramework.runUT();
+    }
+
+    if (argc != (ENTRY_PARAM_NUMBER + 1))
     {
         qDebug() << "ERROR: The parameters number is wrong!";
         a.quit();
@@ -27,6 +34,7 @@ int main(int argc, char *argv[])
     }
 
     FilesMonitorApp app(argv[1], argv[2], &a);
+
     return a.exec();
 }
 

@@ -24,7 +24,9 @@ SOURCES += \
     src/Logger.cpp \
     src/main.cpp \
     src/Worker.cpp \
-    src/FilesMonitorApp.cpp
+    src/FilesMonitorApp.cpp \
+    test/FileReaderTestSuite.cpp \
+    test/UnitTestFramework.cpp
 
 HEADERS += \
     src/FileScanner.h \
@@ -35,7 +37,9 @@ HEADERS += \
     src/Logger.h \
     src/MonitorConfig.h \
     src/MonitorDefs.h \
-    src/Worker.h
+    src/Worker.h \
+    test/FileReaderTestSuite.h \
+    test/UnitTestFramework.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
