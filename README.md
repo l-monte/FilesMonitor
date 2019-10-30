@@ -16,4 +16,4 @@ Then, open your Qt Creator click File -> "Open File or Project..." and choose Qt
 * The application takes two params - first is path to log directory, the second is path to archive folder
 * Each file after read operation is deleted. New logs in this file create the new file with the same name
 * There is config file where the following params could be changed:
- * line length limitation
+    * line length limitation
