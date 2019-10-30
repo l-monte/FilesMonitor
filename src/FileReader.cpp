@@ -2,21 +2,15 @@
 #include <QTimer>
 #include <QDir>
 #include <QFileInfo>
-#include <QDebug>
 #include "MonitorConfig.h"
 #include "MonitorDefs.h"
 #include <QThread>
 #include "Logger.h"
+#include "MonitorConfig.h"
 
 FileReader::FileReader(const QString& filePath) :
     _file(filePath)
 {
-}
-
-// TODO: 2 MB -> 2097152 B -> 2 097 152 / (400 chars * 4B) ~ 1310
-namespace
-{
-constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 1310;
 }
 
 bool FileReader::readFile()
@@ -41,25 +35,25 @@ bool FileReader::readFile()
             data.logData.push_back(input.readLine(LOG_LINE_LENGTH));
             ++lineCnt;
 
-            if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK == 0)
+            if (lineCnt % LINE_NUMBER_IN_ONE_LOG_CHUNK == 0)
             {
                 emit sendReadData(data);
                 data.logData.clear();
             }
         }
-        if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0 and isFileDeleted == false)
+        if (lineCnt % LINE_NUMBER_IN_ONE_LOG_CHUNK != 0 and isFileDeleted == false)
         {
             emit sendReadData(data);
             data.logData.clear();
             if (not _file.remove())
-                qDebug() << "ERROR [FileReader::readFile] Error during removing " + fileInfo.fileName() + " file";
+                LOG(ERROR, "Error during removing " + fileInfo.fileName() + " file")
 
         }
     }
     else
     {
-        Logger::instance().log(Logger::ERROR, "The destination " + _file.fileName() + " file unable to open");
+        LOG(ERROR, "The destination " + _file.fileName() + " file unable to open")
         return false;
     }
-    return false;
+    return true;
 }

@@ -6,20 +6,22 @@
 #include <mutex>
 #include <QFile>
 
+#define LOG(type, txt) Logger::instance().log(type, txt, __FILE__, __LINE__);
+
+enum LOG_LEVEL
+{
+    INFO,
+    WARN,
+    ERROR
+};
+
 class Logger
 {
 public:
 
-    enum LOG_LEVEL
-    {
-        INFO,
-        WARN,
-        ERROR
-    };
-
     static Logger& instance();
 
-    void log(LOG_LEVEL lvl, const QString& txt);
+    void log(LOG_LEVEL lvl, const QString& txt, const QString& file, long line);
 
 private:
     void saveToFile(const QString& log);

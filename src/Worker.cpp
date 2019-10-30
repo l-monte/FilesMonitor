@@ -1,5 +1,4 @@
 #include "Worker.h"
-#include <QDebug>
 #include "FileReader.h"
 #include "ArchiveWriter.h"
 #include "MonitorConfig.h"
@@ -28,8 +27,6 @@ void Worker::run()
     reader.readFile();
 
     loop.exec();
-
-    qDebug() << "\t[Worker::run()] Worker finishes itd work for file: " + retrieveLogFileName();
 
     emit finished(retrieveLogFileName());
 }

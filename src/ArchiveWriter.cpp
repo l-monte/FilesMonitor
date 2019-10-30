@@ -1,6 +1,7 @@
 #include "ArchiveWriter.h"
 #include "MonitorDefs.h"
-#include <QDebug>
+#include <QFileInfo>
+#include "Logger.h"
 
 ArchiveWriter::ArchiveWriter(const QString& archDir) : _file(archDir)
 {
@@ -12,18 +13,24 @@ void ArchiveWriter::write(const LogData& data)
     {
         QTextStream output(&_file);
 
-        for (auto line: data.logData)       //TODO
+        for (auto line: data.logData)
         {
             output << line << "\n";
         }
         _file.close();
     }
     else
-        qDebug() << "\tERROR: [ArchiveWriter::write] _file is unable to open.";
+    {
+        QFileInfo fInfo(_file);
+        LOG(ERROR, "Unable to open " + fInfo.fileName() + " file for writing")
+    }
 }
 
 void ArchiveWriter::deleteFile() const
 {
     if (not _file.remove(_file.fileName()))
-        qDebug() << "ERROR: [ArchiveWriter::deleteFile]: nable to remove file: " + _file.fileName();
+    {
+        QFileInfo fInfo(_file);
+        LOG(ERROR, "Unable to delete " + fInfo.fileName() + " file")
+    }
 }

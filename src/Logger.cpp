@@ -1,4 +1,7 @@
 #include "Logger.h"
+#include <QFileInfo>
+#include <QTime>
+#include "MonitorConfig.h"
 
 Logger::Logger() : _file(DEBUG_FILE)
 {
@@ -12,13 +15,18 @@ Logger& Logger::instance()
     return logger;
 }
 
-void Logger::log(LOG_LEVEL lvl, const QString& txt)
+void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file, long line)
 {
     std::lock_guard<std::mutex> guard(_mutex);
-    QString logStr = "[" + QString::number((long long)QThread::currentThread()) + "] " +
-            getLevel(lvl) + " " + __FILE__ + ":" + __LINE__ + " " + txt;
 
-    qDebug() << logStr;
+    QFileInfo fInfo(file);
+    QString logStr = QTime::currentTime().toString() +
+            "[" + QString().sprintf("%08p", QThread::currentThread()) + "] " +
+            getLevel(lvl) + " " +
+            fInfo.fileName() + ": " +
+            txt;
+
+    qDebug().noquote() << logStr;
 
     if (WRITE_TO_FILE_FLAG)
         saveToFile(logStr);
@@ -35,7 +43,7 @@ void Logger::saveToFile(const QString& log)
         _file.close();
     }
     else
-        qDebug() << "\tERROR: [Logger::saveToFile] _file is unable to open.";
+        qDebug().noquote() << "ERROR: file is unable to open for saving logs...";
 }
 
 QString Logger::getLevel(LOG_LEVEL lvl) const

@@ -1,7 +1,7 @@
 #include "FilesMonitorApp.h"
 #include <QThread>
 #include "Worker.h"
-#include <QDebug>
+#include "Logger.h"
 #include "MonitorConfig.h"
 #include <QApplication>
 using namespace std;
@@ -29,7 +29,6 @@ FilesMonitorApp::FilesMonitorApp(const QString& rootDirectory, const QString& ar
 
 void FilesMonitorApp::onNewFileAdded(const QString& fileName)
 {
-    qDebug() << "INFO: [FilesMonitorApp::onNewFileAdded] got onNewFileAdded signal (file: " << fileName << ").";
     Worker *worker = new Worker(WorkerSetupData{_rootDir.absoluteFilePath() + "/" + fileName, _archDir.absoluteFilePath() + "/" + fileName} );
     worker->setAutoDelete(true);
 
@@ -37,37 +36,34 @@ void FilesMonitorApp::onNewFileAdded(const QString& fileName)
 
     _threadPool.start(worker);
 
+    LOG(INFO, "Starting new Worker for " + fileName + " file")
+
     _fileToWorkerStateMap.insert(fileName, WorkerState::RUNNING);
 }
 
 void FilesMonitorApp::onFileModified(const QString& fileName)
 {
-    qDebug() << "INFO: [FilesMonitorApp::onFileModified] got fileModified signal (file: " << fileName << ").";
-
     if (not _fileToWorkerStateMap.contains(fileName))
     {
-        qDebug() << "INFO: [FilesMonitorApp::onFileModified] file is not contained in the map -> calling onNewFileAdded slot.";
         onNewFileAdded(fileName);
         return;
     }
 
     if (WorkerState::FILE_DELETED == _fileToWorkerStateMap.value(fileName))
     {
-        qDebug() << "INFO: [FilesMonitorApp::onFileModified] file is deleted -> calling onNewFileAdded slot.";
         onNewFileAdded(fileName);
         return;
     }
 }
 void FilesMonitorApp::onFileRemoved(const QString& fileName)
 {
-    qDebug() << "INFO: [FilesMonitorApp::onFileRemoved] got fileRemoved signal (file: " << fileName << ").";
-
     _fileToWorkerStateMap.insert(fileName, WorkerState::FILE_DELETED);
 }
 
 void FilesMonitorApp::onWorkerFinished(const QString& fileName)
 {
-    qDebug() << "INFO: [FilesMonitorApp::onWorkerFinished] Received filename is: " + fileName;
+    QFileInfo fInfo(fileName);
+    LOG(INFO, "Worker finished processing of file: " + fInfo.fileName())
 
     _fileToWorkerStateMap.insert(fileName, WorkerState::FILE_DELETED);
 }
