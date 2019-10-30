@@ -28,7 +28,10 @@ private:
     void fillTestFile(quint64 linesNumber);
 
     template<typename T>
-    bool isTheSame(T a1, T a2);
+    bool isEqual(T a1, T a2);
+
+    template<typename T>
+    bool isNotEqual(T a1, T a2);
 
 private:
     std::unique_ptr<FileReader> _dut;

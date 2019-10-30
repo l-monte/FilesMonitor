@@ -8,9 +8,15 @@
 namespace
 {
 const QString TEST_FILE_PATH = "dut_file.txt";
-constexpr quint8 LINE_NUMBER_0 = 0;
-constexpr quint8 LINE_NUMBER_1 = 1;
-constexpr quint16 LINE_NUMBER_1500 = 1500;
+constexpr int LINE_NUMBER_0 = 0;
+constexpr int LINE_NUMBER_1 = 1;
+constexpr int LINE_NUMBER_1500 = 1500;
+
+constexpr int LOG_PORTION_SIZE = 1310;
+constexpr int LOG_PORTION_EMPTY = 0;
+
+constexpr int ONE_SIGNAL_EMITED = 1;
+constexpr int TWO_SIGNAL_EMITED = 2;
 }
 
 FileReaderTestSuite::FileReaderTestSuite(QObject *parent) :
@@ -45,7 +51,10 @@ Result FileReaderTestSuite::testCase_readEmptyFile_shouldEmitEmptyLogData()
 
     _dut->readFile();
 
-    bool result = isTheSame(sendDataSpy.count(), 1);
+    bool result = isEqual(sendDataSpy.count(), ONE_SIGNAL_EMITED);
+    LogData data = qvariant_cast<LogData>(sendDataSpy.takeFirst().takeFirst());
+
+    result = result && data.logData.empty();
 
     cleanUpTestCase();
 
@@ -62,11 +71,13 @@ Result FileReaderTestSuite::testCase_readFileWith1Line_shouldEmitFilledLogData()
 
     _dut->readFile();
 
-    bool result = isTheSame(sendDataSpy.count(), 1);
+    bool resNum = isEqual(sendDataSpy.count(), ONE_SIGNAL_EMITED);
+    LogData data = qvariant_cast<LogData>(sendDataSpy.takeFirst().takeFirst());
+    bool resSize = isEqual(data.logData.size(), 1);
 
     cleanUpTestCase();
 
-    return {result, "readFileWith1Line_shouldEmitFilledLogData"};
+    return {resNum && resSize, "readFileWith1Line_shouldEmitFilledLogData"};
 }
 
 Result FileReaderTestSuite::testCase_readFileWith1500Line_shouldEmitTwoSignals()
@@ -79,11 +90,15 @@ Result FileReaderTestSuite::testCase_readFileWith1500Line_shouldEmitTwoSignals()
 
     _dut->readFile();
 
-    bool result = isTheSame(sendDataSpy.count(), 2);
+    bool resNum  = isEqual(sendDataSpy.count(), TWO_SIGNAL_EMITED);
+    LogData portion1 = qvariant_cast<LogData>(sendDataSpy.takeFirst().takeFirst());
+    LogData portion2 = qvariant_cast<LogData>(sendDataSpy.takeLast().takeFirst());
+    bool resSize1 = isEqual(portion1.logData.size(),    LOG_PORTION_SIZE);
+    bool resSize2 = isNotEqual(portion2.logData.size(), LOG_PORTION_EMPTY);
 
     cleanUpTestCase();
 
-    return {result, "readFileWith1500Line_shouldEmitTwoSignals"};
+    return {resNum && resSize1 && resSize2, "readFileWith1500Line_shouldEmitTwoSignals"};
 }
 
 void FileReaderTestSuite::fillTestFile(quint64 linesNumber)
@@ -92,7 +107,7 @@ void FileReaderTestSuite::fillTestFile(quint64 linesNumber)
     {
         QTextStream stream(_dutFile);
 
-        for (quint64 i = 1; i < linesNumber; ++i)
+        for (quint64 i = 1; i <= linesNumber; ++i)
         {
             stream << "Test suite: FileReaderTestSuite - line number: " + QString::number(i);
             stream << endl;
@@ -107,7 +122,13 @@ void FileReaderTestSuite::fillTestFile(quint64 linesNumber)
 }
 
 template<typename T>
-bool FileReaderTestSuite::isTheSame(T a1, T a2)
+bool FileReaderTestSuite::isEqual(T a1, T a2)
 {
     return a1 == a2;
+}
+
+template<typename T>
+bool FileReaderTestSuite::isNotEqual(T a1, T a2)
+{
+    return !isEqual<T>(a1, a2);
 }

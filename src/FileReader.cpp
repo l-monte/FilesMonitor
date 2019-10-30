@@ -18,7 +18,7 @@ bool FileReader::readFile()
     if (_file.open(QFile::ReadOnly | QFile::Text))
     {
         bool isFileDeleted = false;
-        quint64 lineCnt = 1;
+        quint64 lineCnt = 0;
         QTextStream input(&_file);
         QFileInfo fileInfo(_file);
         LogData data{fileInfo.fileName(), {}};
@@ -41,7 +41,7 @@ bool FileReader::readFile()
                 data.logData.clear();
             }
         }
-        if (lineCnt % LINE_NUMBER_IN_ONE_LOG_CHUNK != 0 and isFileDeleted == false)
+        if (((lineCnt == 0) or (lineCnt % LINE_NUMBER_IN_ONE_LOG_CHUNK != 0)) and isFileDeleted == false)
         {
             emit sendReadData(data);
             data.logData.clear();

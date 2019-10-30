@@ -15,7 +15,7 @@ Logger& Logger::instance()
     return logger;
 }
 
-void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file, long line)
+void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file)
 {
     std::lock_guard<std::mutex> guard(_mutex);
 
@@ -27,6 +27,7 @@ void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file, long li
             txt;
 
     qDebug().noquote() << logStr;
+    qDebug().noquote() << endl;
 
     if (WRITE_TO_FILE_FLAG)
         saveToFile(logStr);
