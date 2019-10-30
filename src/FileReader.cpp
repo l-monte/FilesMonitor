@@ -2,10 +2,10 @@
 #include <QTimer>
 #include <QDir>
 #include <QFileInfo>
-#include <QDebug>
 #include "MonitorConfig.h"
 #include "MonitorDefs.h"
 #include <QThread>
+#include "Logger.h"
 
 FileReader::FileReader(const QString& filePath) :
     _file(filePath)
@@ -18,7 +18,7 @@ namespace
 constexpr unsigned int LINE_NUMBER_IN_ONE_CHUNK = 1310;
 }
 
-void FileReader::readFile()
+bool FileReader::readFile()
 {
     if (_file.open(QFile::ReadOnly | QFile::Text))
     {
@@ -45,17 +45,20 @@ void FileReader::readFile()
                 emit sendReadData(data);
                 data.logData.clear();
             }
-
-//            qDebug() << "\tSleeping thread for file: " + fileInfo.fileName() + "...";
-//            QThread::msleep(3000);
         }
         if (lineCnt % LINE_NUMBER_IN_ONE_CHUNK != 0 and isFileDeleted == false)
         {
             emit sendReadData(data);
             data.logData.clear();
             if (not _file.remove())
-                qDebug() << "ERROR [FileReader::readFile] Error during removing " + fileInfo.fileName() + " file";
+                LOG(ERROR, "Error during removing " + fileInfo.fileName() + " file")
 
         }
     }
+    else
+    {
+        LOG(ERROR, "The destination " + _file.fileName() + " file unable to open")
+        return false;
+    }
+    return true;
 }

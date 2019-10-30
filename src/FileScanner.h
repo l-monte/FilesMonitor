@@ -2,7 +2,6 @@
 #define FILESCANNER_H
 
 #include <QObject>
-#include <QTimer>
 #include <QDir>
 #include <QFileSystemWatcher>
 
@@ -15,7 +14,6 @@ public:
     void scanFiles();
 
 signals:
-    void scannerTimeout();      // TODO do usunięcia
     void newFileAdded(const QString& fileName);
     void fileModified(const QString& fileName);
     void fileRemoved(const QString& fileName);
@@ -28,7 +26,6 @@ private:
 
 private:
     QDir _rootDirectory;
-    QTimer* _fileScanningTimer;
     QFileSystemWatcher _watcher;
 };
 

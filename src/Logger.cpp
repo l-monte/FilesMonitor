@@ -1,6 +1,7 @@
 #include "Logger.h"
 #include <QFileInfo>
 #include <QTime>
+#include "MonitorConfig.h"
 
 Logger::Logger() : _file(DEBUG_FILE)
 {
@@ -20,13 +21,12 @@ void Logger::log(LOG_LEVEL lvl, const QString& txt, const QString& file, long li
 
     QFileInfo fInfo(file);
     QString logStr = QTime::currentTime().toString() +
-            " [0x" + QString::number((long long)QThread::currentThread(), 16) + "] " +
+            "[" + QString().sprintf("%08p", QThread::currentThread()) + "] " +
             getLevel(lvl) + " " +
-            fInfo.fileName() + ":" +
-            __LINE__ + " " +
+            fInfo.fileName() + ": " +
             txt;
 
-    qDebug() << logStr;
+    qDebug().noquote() << logStr;
 
     if (WRITE_TO_FILE_FLAG)
         saveToFile(logStr);
@@ -43,7 +43,7 @@ void Logger::saveToFile(const QString& log)
         _file.close();
     }
     else
-        qDebug() << "\tERROR: [Logger::saveToFile] _file is unable to open.";
+        qDebug().noquote() << "ERROR: file is unable to open for saving logs...";
 }
 
 QString Logger::getLevel(LOG_LEVEL lvl) const

@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include "FilesMonitorApp.h"
 #include "MonitorConfig.h"
-#include <QDebug>
-#include <QDir>
 #include <QFileInfo>
+#include "Logger.h"
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
