@@ -1,6 +1,6 @@
 # FilesMonitor
 
-The project is implemented using qmake tool. It bases on C++17 version.
+**The project is implemented using qmake tool. It bases on C++17 version.**
 
 The following points must be meet to build and run the application:
 * download the newest version of Qt SDK and Qt Creator
