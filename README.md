@@ -9,3 +9,7 @@ The following points must be meet to build and run the application:
 
 
 Then, open your Qt Creator click File -> "Open File or Project..." and choose Qt Project File.
+
+
+*The project assumptions:*
+* 
