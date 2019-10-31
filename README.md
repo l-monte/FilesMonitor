@@ -21,3 +21,12 @@ Then, open your Qt Creator click File -> "Open File or Project..." and choose Qt
     * number of threads
     * REST peer address
     * number of read lines from file as one chunk
+* Each file is read by another worker class
+* After read whole file, worker removes such file from "root" directory
+* There is an assumption that the file modification could occur during file reading
+
+
+**Notes**
+* There is only test suite UT for one class - I assumed that you want to see how I test the code, but taking into account my time limitations in last days I did such assumption. There were some configuration problems with UT framework dedicated for QT library, so I wrote some own, small test framework.
+Of course, I have tested manually different scenarios for another classes. 
+* I did not created interfaces to classes which is good practice, but it was dicated by simple application structure. I am open to discuss on this topic.
