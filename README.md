@@ -1,5 +1,7 @@
 # FilesMonitor
 
+Build an application in which will read logs files from a specific directory (set by parameter) then send the content of all logs to a REST endpoint. After sending archive already sent logs -  move them to ‘archived’ directory.
+
 **The project is implemented using qmake tool. It bases on C++17 version.**
 
 The following points must be meet to build and run the application:
